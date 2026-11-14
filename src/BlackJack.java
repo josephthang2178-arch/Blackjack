@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 
 
@@ -59,12 +60,52 @@ ArrayList<Card> dealerHand;
 int dealerSum; //Keeps track of the dealers card
 int dealerAceCount; //dealer aces
 
+//player
+ArrayList<Card> playerHand;
+int playerSum;
+int playerAceCount;
 
+//window for the game
 
+int boardWidth = 600;
+int boardHeight = boardWidth;
+int cardWidth = 110;  //ration should be 1/1.4
+int cardHeight = 154; 
 
+JFrame frame = new JFrame ("Black Jack");
+JPanel gamePanel = new JPanel();
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        //draw hidden card
+        Image hiddenCardImg = new ImageIcon(getClass().getResource("./cards/BACK.png")).getImage();
+        g.drawImage(hiddenCardImg, 20, 20, cardWidth, cardHeight, null);
+    }
+JPanel buttonPanel = new JPanel();
+JButton hitButton = new JButton("Hit");
+JButton standButton = new JButton("Stand");
 
 BlackJack() {
     startGame();
+
+    frame.setVisible(true);
+    frame.setSize(boardWidth, boardHeight);
+    frame.setLocationRelativeTo(null); //prevents the frame from starting on the corner
+    frame.setResizable(false);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+    gamePanel.setLayout(new BorderLayout());
+    gamePanel.setBackground(new Color(50, 205, 114));
+    frame.add(gamePanel);
+
+    hitButton.setFocusable(false);
+    buttonPanel.add(hitButton);
+    standButton.setFocusable(false);
+    buttonPanel.add(standButton);
+    frame.add(buttonPanel, BorderLayout.SOUTH);
+
 }
 
 public void startGame() {
@@ -96,6 +137,28 @@ public void startGame() {
     System.out.println(dealerHand);
     System.out.println(dealerSum);
     System.out.println(dealerAceCount);
+
+
+
+
+    //gives 2 cards to the playerr
+    playerHand = new ArrayList<Card>();
+    playerSum = 0;
+    playerAceCount = 0;
+
+    for (int i = 0; i < 2; i++) {
+        card = deck.remove(deck.size()-1);
+        playerSum += card.getValue();
+        playerAceCount += card.isAce() ? 1:0;
+        playerHand.add(card);
+//finally figured out that for is a loop
+    }
+    System.out.println("PLAYER: ");
+    System.out.println(playerHand);
+    System.out.println(playerSum);
+    System.out.println(playerAceCount);
+
+
 }
 
     
